@@ -1,0 +1,18 @@
+name: open-chat
+services:
+  web-app:
+    container_name: open-chat
+    build:
+      dockerfile: ./Dockerfile
+
+    expose:
+      - "3000"
+    ports:
+      - "18100:3000"
+    networks:
+      nginx:
+        aliases:
+          - socket-web
+networks:
+  nginx:
+    external: true
