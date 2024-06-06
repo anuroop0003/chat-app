@@ -1,12 +1,14 @@
-FROM node:18-alpine
-WORKDIR /app
+FROM node:14-alpine
+ENV NODE_ENV=production
 ENV GENERATE_SOURCEMAP=false
 ENV NODE_OPTIONS=--max-old-space-size=4096
-ARG REACT_APP_API_URL
-COPY package.json .
-COPY package-lock.json .
+
+WORKDIR /usr/src/app
+
 COPY . .
-RUN npm i
-RUN npm i -g serve
-RUN npm run build
-CMD ["serve","-s","build"]
+
+RUN npm install --production
+RUN npm i mysql2
+RUN npm install -g pm2
+
+CMD ["pm2-runtime","--name","core","app.js"]
